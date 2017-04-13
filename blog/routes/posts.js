@@ -4,6 +4,7 @@ var router = express.Router();
 
 // create
 router.post('/posts', function(req, res, next) {
+    // res.json(req.body)
   post.add(req, res, next);
 });
 
@@ -15,8 +16,7 @@ router.get('/posts/new', function(req, res, next) {
 
 // index
 router.get('/posts', function(req, res, next) {
-    console.log('come in');
-  post.queryAll((req, res, next), function (err, posts) {
+  post.queryAll(req, res, next, function (err, posts) {
     if (err) {
       posts = [];
     }

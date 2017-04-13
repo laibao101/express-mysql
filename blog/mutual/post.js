@@ -4,8 +4,10 @@ var $util = require('../util/util');
 var $sql = require('./postSqlMapping');
 
 // 使用连接池，提升性能
-var pool = mysql.createPool($util.extend({}, $conf.mysql));
-
+var pool = mysql.createPool({
+    host: '127.0.0.1', user: 'root', password: 'root123', database: 'test', // 前面建的post表位于这个数据库中
+    port: 3306
+});
 // 向前台返回JSON方法的简单封装
 var jsonWrite = function(res, ret) {
     if (typeof ret === 'undefined') {
@@ -19,8 +21,8 @@ module.exports = {
     add: function(req, res, next) {
         pool.getConnection(function(err, connection) {
             // 获取前台页面传过来的参数
-            var param = req.query || req.params;
-
+            // var param = req.query || req.params || req.body;
+            var param = req.body;
             // 建立连接，向表中插入值
             // 'INSERT INTO post(id, title, content) VALUES(0,?,?)',
             connection.query($sql.insert, [
@@ -42,15 +44,32 @@ module.exports = {
         });
     },
     // index
-    queryAll: function(req, res, next) {
-		console.log('query all');
-		console.log(pool);
-        pool.getConnection(function(err, connection) {
-            connection.query($sql.queryAll, function(err, result) {
+    queryAll: function(req, res, next,cb) {
+        console.log('query all');
+        // console.log(pool);
+        // pool.getConnection(function(err, connection) {
+        //     connection.query('SELECT * FROM post', function(error, results,fields) {
+        //         connection.release();
+        //
+        //         console.log(result);
+        //         // jsonWrite(res, result);
+        //     });
+        // });
 
-                jsonWrite(res, result);
+        pool.getConnection(function(err, connection) {
+            // Use the connection
+            connection.query($sql.queryAll, function(error, results, fields) {
+                // And done with the connection.
                 connection.release();
-            });
+
+                jsonWrite(res, results);
+                // Handle error after the release.
+                if (error)
+                    throw error;
+                    // Don't use the connection here, it has been returned to the pool.
+                }
+            );
         });
+
     }
 };
