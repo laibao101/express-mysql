@@ -20,7 +20,7 @@ router.get('/posts', function(req, res, next) {
   //   if (err) {
   //     posts = [];
   //   }
-  //   res.render('post_index', {
+  //   res.render('posts', {
   //     title: '文章',
   //     posts: posts
   //   });
