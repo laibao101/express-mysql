@@ -1,0 +1,6 @@
+<%- include title %>
+<% posts.forEach(function (post, index) { %>
+  <p><h2><a href="#"><%= post.title %></a></h2></p>
+  <p><%- post.content %></p>
+<% }) %>
+<%- include footer %>
