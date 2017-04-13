@@ -16,15 +16,15 @@ router.get('/posts/new', function(req, res, next) {
 // index
 router.get('/posts', function(req, res, next) {
     console.log('come in');
-  // post.queryAll((req, res, next), function (err, posts) {
-  //   if (err) {
-  //     posts = [];
-  //   }
-  //   res.render('posts', {
-  //     title: '文章',
-  //     posts: posts
-  //   });
-  // });
+  post.queryAll((req, res, next), function (err, posts) {
+    if (err) {
+      posts = [];
+    }
+    res.render('posts', {
+      title: '文章',
+      posts: posts
+    });
+  });
 });
 
 module.exports = router;

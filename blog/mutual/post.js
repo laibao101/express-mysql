@@ -44,13 +44,13 @@ module.exports = {
     // index
     queryAll: function(req, res, next) {
 		console.log('query all');
-		// console.log(pool);
-        // pool.getConnection(function(err, connection) {
-        //     connection.query($sql.queryAll, function(err, result) {
-		//
-        //         jsonWrite(res, result);
-        //         connection.release();
-        //     });
-        // });
+		console.log(pool);
+        pool.getConnection(function(err, connection) {
+            connection.query($sql.queryAll, function(err, result) {
+
+                jsonWrite(res, result);
+                connection.release();
+            });
+        });
     }
 };
